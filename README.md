@@ -2,14 +2,14 @@
 # GRM (Graph Relevance Miner) <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg/2000px-Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg.png" height="35">
 
 
-This repository contains the implementation of GRM from [Stierle et al.](https://arxiv.org/abs/TBD).
+This repository contains the implementation of GRM from [Stierle et al.](https://arxiv.org/abs/2008.03110).
 To cite this work, please use:
 ```
 @misc{stierle2020grm,
     title={A Technique for Determining Relevance Scores of Process Activities using Graph-based Neural Networks},
     author={Matthias Stierle and Sven Weinzierl and Maximilian Harl and Martin Matzner},
     year={2020},
-    eprint={TBD},
+    eprint={2008.03110},
     archivePrefix={arXiv},
     primaryClass={cs.ML}
 }
