@@ -7,7 +7,7 @@ To cite this work, please use:
 ```
 @misc{stierle2020grm,
     title={A Technique for Determining Relevance Scores of Process Activities using Graph-based Neural Networks},
-    author={Matthias Stierle and Sven Weinzierl and Maximilian Harl and Martin Matzner},
+    author={Stierle, Matthias and Weinzierl, Sven and Harl, Maximilian and Matzner, Martin},
     year={2020},
     eprint={2008.03110},
     archivePrefix={arXiv},
