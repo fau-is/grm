@@ -1,25 +1,21 @@
 """
-Evaluation No. 4
+Evaluation No. 5
 
-- Data Set
-    - Title: BPI2018 - Application Log
-    - Target Variable: Overspend
-    - Source: URL/origin
-- Pre-processing
-    - Filtering: -
-    - Used Columns: -
+
 """
 
 from eval.evaluation import run_experiment
 from grm import preprocessing
 
 
-logfile = "bpi2018_application_log.csv"
-name_of_case_id = "case"
-name_of_activity = "event"
-name_of_timestamp = "completeTime"
-name_of_label = "rejected"
-hyper_params = {'num_epochs': 5}
+logfile = "clickstream_anon.csv"
+name_of_case_id = "CASE_KEY"
+name_of_activity = "ACTIVITY"
+name_of_timestamp = "EVENTTIMESTAMP"
+name_of_label = "EXCEPTION"
+hyper_params = {'num_epochs': 3,
+                'batch_size': 1024,
+                'hidden_size': 2000}
 k = 10
 
 log = preprocessing.import_data("../data", logfile, separator=",", quote='"', case_id=name_of_case_id,

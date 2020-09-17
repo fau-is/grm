@@ -9,7 +9,7 @@ from mlflow import log_metric, log_param, log_artifact
 
 
 def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
-                   ml_flow_exp="<insert project>",
+                   ml_flow_exp="/Shared/grm-review",
                    ml_flow_run_name_prefix="Experiment"):
     """
     Performs experiment.
@@ -67,7 +67,7 @@ def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
                     print(key + " of run " + str(i) + ": " + str(round(measures[key], 3)))
 
                 log_artifact(grm_model.best_model_file)
-                log_artifact('./results/cm.pdf')
+                log_artifact('../results/cm.pdf')
 
         for key in results_measures.keys():
             overall_measure = mean(results_measures[key])
@@ -92,4 +92,5 @@ def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
         multi_instance_log = sampling.sample(data_raw, n=1000)
 
         # Visualization as DFG (with evaluation data)
-        log_artifact(grm_model.visualize_dfg(save_file=True, log=multi_instance_log, file_name="multi"))
+        for file in grm_model.visualize_dfg(save_file=True, log=multi_instance_log, file_name="multi"):
+            log_artifact(file)

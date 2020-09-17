@@ -144,7 +144,7 @@ def label_binarizer(labels):
     return labels
 
 
-def save_confusion_matrix(labels, predictions, path="../../../results/cm.pdf"):
+def save_confusion_matrix(labels, predictions, path="../results/cm.pdf"):
 
     classes = sklearn.utils.multiclass.unique_labels(labels, predictions)
     cms = []

@@ -41,7 +41,8 @@ def import_data(directory, file_name, separator=";", quote=None, case_id="concep
                       constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: TIMEST_KEY,
                       'sep': separator,
                       'quotechar': quote,
-                      'timest_columns': TIMEST_KEY}
+                      'timest_columns': TIMEST_KEY,
+                      'low_memory': False}
 
         # Load pm4py event stream
         event_stream = csv_importer.import_event_stream(data_dir, parameters=parameters)

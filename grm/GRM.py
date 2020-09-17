@@ -157,7 +157,7 @@ class GRM(GGNNsparse):
                 break
 
         # Save labels and predictions
-        with open('../eval/results/gt_pred.csv', 'w', newline='', encoding='utf-8') as file:
+        with open('gt_pred.csv', 'w', newline='', encoding='utf-8') as file:
             fieldnames = ['Label', 'Prediction']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
@@ -188,7 +188,7 @@ class GRM(GGNNsparse):
         :return: file_names [list].
         """
         parameters = {"format": "svg"}
-        file_names = []
+        file_names = list()
         relevance_scores = self.aggregate_relevance_scores(log)
         if variant == "relevance" or variant == "all":
             for label, items in relevance_scores.items():
@@ -247,4 +247,4 @@ class GRM(GGNNsparse):
                     dfg_vis_factory.save(gviz, filen)
                     print("Saved DFG image to: " + filen)
                     file_names.append(filen)
-            return file_names
+        return file_names
