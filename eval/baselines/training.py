@@ -32,7 +32,7 @@ def train(log, indices, mapping_activities, max_seq_length, predictor, fold, nam
         training_generator = DataGenerator(preprocessing, data_ids, sequences, mapping_activities, max_seq_length, name_of_activity)
         validation_generator = DataGenerator(preprocessing, validation_ids, sequences, mapping_activities, max_seq_length, name_of_activity)
 
-        num_epochs = 1
+        num_epochs = 100
 
         # input layer
         main_input = tf.keras.layers.Input(shape=(max_seq_length, len(mapping_activities.keys())), name='main_input')
