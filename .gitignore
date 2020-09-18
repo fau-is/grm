@@ -19,7 +19,7 @@ condaenv.*
 *.png
 *.svg
 /eval/logged_models
-/eval/results
+/eval/baselines/results
 
 
 
