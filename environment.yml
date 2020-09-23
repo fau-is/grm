@@ -1,9 +1,9 @@
-name: GRM-ggnn2
+name: GRM-ggnn
 channels:
   - defaults
   - conda-forge
 dependencies:
-  - python=3.6
+  - python=3.6.8
   - rdkit
   - networkx=2.4
   - matplotlib
