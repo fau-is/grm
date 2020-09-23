@@ -1,11 +1,12 @@
 from grm.util import merge_dict, avg_dict, filter_log_by_caseid, get_values_event_attribute_for_trace, create_pig, \
-    log_to_numeric, __getmappingactivities__, __getmappinglabel__, norm_min_max_dict
+    log_to_numeric, __getmappingactivities__, __getmappinglabel__, norm_min_max_dict, bool_to_bin
 from grm.GGNNsparse import GGNNsparse
-from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.visualization.dfg import factory as dfg_vis_factory
-from pm4py.algo.filtering.log.attributes import attributes_filter
 from grm.preprocessing import preprocess
 import eval.util.metrics as metrics
+from pm4py.algo.discovery.dfg import factory as dfg_factory
+from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.objects.log.log import EventLog
+from pm4py.algo.filtering.log.attributes import attributes_filter
 import csv
 
 
@@ -153,7 +154,7 @@ class GRM(GGNNsparse):
                 print(prediction[2])
             for event in trace:
                 labels.append(__getmappinglabel__(self.mapping, event.__getitem__("label")))
-                predictions.append(self.bool_to_bin(prediction[1]))
+                predictions.append(bool_to_bin(prediction[1]))
                 break
 
         # Save labels and predictions
@@ -167,18 +168,7 @@ class GRM(GGNNsparse):
 
         return metrics.metrics_from_prediction_and_label(labels, predictions)
 
-    def bool_to_bin(self, bool_value):
-        """
-        Helper function to map a boolean value to a binary value.
-        :param bool_value: boolean boolean value [bool]
-        :return: binary value [int]
-        """
-        if bool_value:
-            return 1
-        else:
-            return 0
-
-    def visualize_dfg(self, log, save_file=False, file_name="dfg", variant="relevance"):
+    def visualize_dfg(self, log, save_file=False, file_name="dfg", variant="relevance", topK=0):
         """
         Visualises the event log as direct follower graph (DFG).
         :param log: event log as a list of traces [list].
@@ -190,6 +180,8 @@ class GRM(GGNNsparse):
         parameters = {"format": "svg"}
         file_names = list()
         relevance_scores = self.aggregate_relevance_scores(log)
+        if topK > 0:
+            relevance_scores, log = filter_log_by_relevance(topK, log, relevance_scores)
         if variant == "relevance" or variant == "all":
             for label, items in relevance_scores.items():
                 data = filter_log_by_caseid(log, items['traces'])
@@ -248,3 +240,14 @@ class GRM(GGNNsparse):
                     print("Saved DFG image to: " + filen)
                     file_names.append(filen)
         return file_names
+
+
+def filter_log_by_relevance(topK, log, relevance_scores):
+    log_new = EventLog()
+    for label in relevance_scores:
+        relevance_scores[label]['scores'] = dict(sorted(relevance_scores[label]['scores'].items(), key=lambda x: x[1], reverse=True)[:topK])
+        log_dummy = filter_log_by_caseid(log, relevance_scores[label]['traces'])
+        log_dummy = attributes_filter.apply_events(log_dummy, relevance_scores[label]['scores'].keys(), parameters={
+        attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "concept:name", "positive": True})
+        log_new._list = log_new._list + log_dummy._list
+    return relevance_scores, log_new
