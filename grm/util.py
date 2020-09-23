@@ -609,3 +609,14 @@ def visualize_dfg(log, filename):
     parameters = {"format": "svg"}
     gviz = dfg_vis_factory.apply(dfg, log=log, parameters=parameters, variant='frequency')
     dfg_vis_factory.save(gviz, filename)
+
+def bool_to_bin(bool_value):
+    """
+    Helper function to map a boolean value to a binary value.
+    :param bool_value: boolean boolean value [bool]
+    :return: binary value [int]
+    """
+    if bool_value:
+        return 1
+    else:
+        return 0
