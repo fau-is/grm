@@ -4,7 +4,7 @@ from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.util import constants
 from pm4py.objects.log.util import sampling
 
-model_path = '../best_models/sp2020/2020-05-06-05-40_best_model.pickle'
+model_path = '../logged_models/sp2020/2020-05-06-05-40_best_model.pickle'
 logfile = "sp2020.csv"
 name_of_case_id = "CASE_ID"
 name_of_activity = "ACTIVITY"
