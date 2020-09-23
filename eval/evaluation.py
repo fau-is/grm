@@ -10,7 +10,7 @@ from mlflow import log_metric, log_param, log_artifact
 
 def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
                    ml_flow_exp="/Shared/grm-review",
-                   ml_flow_run_name_prefix="Experiment", save_artifact=True):
+                   ml_flow_run_name_prefix="Experiment"):
     """
     Performs experiment.
     :param data_raw: raw data from event log file.
@@ -19,7 +19,6 @@ def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
     :param ml_flow_uri: ??
     :param ml_flow_exp: ??
     :param ml_flow_run_name_prefix: ??
-    :param save_artifact: set False if >1GB
     :return: none.
     """
 
@@ -67,8 +66,7 @@ def run_experiment(data_raw, hyper_params=None, k=10, ml_flow_uri="databricks",
                     results_measures[key].append(measures[key])
                     print(key + " of run " + str(i) + ": " + str(round(measures[key], 3)))
 
-                if save_artifact is True:
-                    log_artifact(grm_model.best_model_file)
+                log_artifact(grm_model.best_model_file)
                 log_artifact('../results/cm.pdf')
 
         for key in results_measures.keys():

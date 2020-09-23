@@ -4,12 +4,9 @@ from grm.GGNNsparse import GGNNsparse
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.objects.conversion.log import factory as conversion_factory
-from pm4py.objects.log.log import EventLog
 from grm.preprocessing import preprocess
 import eval.util.metrics as metrics
 import csv
-import operator
 
 
 class GRM(GGNNsparse):
@@ -241,141 +238,6 @@ class GRM(GGNNsparse):
                     title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
                 else:
                     title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(label) + ")"
-                gviz.body.append('\t// title')
-                gviz.body.append('\tfontsize = 50;')
-                gviz.body.append('\tlabelloc = "t";')
-                gviz.body.append('\tlabel = "' + title + '";')
-                if save_file:
-                    filen = file_name + "_time_" + str(label) + ".svg"
-                    dfg_vis_factory.save(gviz, filen)
-                    print("Saved DFG image to: " + filen)
-                    file_names.append(filen)
-        return file_names
-
-    def show_most_relevant_trace(self, log, trace, no_activities, name_of_case_id, file_name="filtered_dfg"):
-
-        case_id, pred, relevance_scores = self.predict(trace)
-
-        no_activities = len(relevance_scores) if len(relevance_scores) < no_activities else no_activities
-
-        if len(relevance_scores) > 1:
-            relevant_trace = EventLog()
-
-            least_relevant = [tuple[0] for tuple in sorted(relevance_scores.items(), key=operator.itemgetter(1))[0:len(relevance_scores) - no_activities]]
-
-            log_trace = attributes_filter.apply(log, [case_id], parameters={
-               attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: name_of_case_id, "positive": True})
-
-            trace_without_irr = attributes_filter.apply_events(log_trace, least_relevant, parameters={
-                attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "concept:name", "positive": False})
-
-            trace_without_irr = trace_without_irr[0]
-
-            relevant_trace._list.append(trace_without_irr)
-
-            vis_log = conversion_factory.apply(relevant_trace)
-            self.visualize_dfg(vis_log, save_file=True, file_name=file_name)
-
-
-    def show_most_relevant(self, log, no_activities, file_name="filtered_dfg", save_file=False, variant="relevance"):
-        """
-        Visualises the no_activities most relevant activities from the event log as direct follower graph (DFG).
-        :param log: event log as a list of traces [list].
-        :param save_file: boolean flog indicating to save the DFG or not [bool].
-        :param file_name: name of the file [str].
-        :param variant: dfg version to be produced: "frequency", "time", "relevance" or "all" [str]
-        :return: file_names [list].
-        """
-        parameters = {"format": "svg"}
-        file_names = list()
-        relevance_scores = self.aggregate_relevance_scores(log)
-
-        if variant == "relevance" or variant == "all":
-            for label, items in relevance_scores.items():
-                no_activities = len(relevance_scores[label]['scores']) if len(
-                    relevance_scores[label]['scores']) < no_activities else no_activities
-
-                least_relevant = [tuple[0] for tuple in
-                                  sorted(relevance_scores[label]['scores'].items(), key=operator.itemgetter(1))[
-                                  0:len(relevance_scores[label]['scores']) - no_activities]]
-
-                data = filter_log_by_caseid(log, items['traces'])
-
-                data = attributes_filter.apply_events(data, least_relevant, parameters={
-                    attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "concept:name", "positive": False})
-
-                dfg = dfg_factory.apply(data)
-                gviz = dfg_vis_factory.apply(dfg, activities_count=items['scores'], parameters=parameters)
-                if len(items['traces']) == 1:
-                    title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
-                else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(
-                        label) + ")"
-                gviz.body.append('\t// title')
-                gviz.body.append('\tfontsize = 50;')
-                gviz.body.append('\tlabelloc = "t";')
-                gviz.body.append('\tlabel = "' + title + '";')
-                print("rel_sc: ", items['scores'])
-                if save_file:
-                    filen = file_name + "_rel_" + str(label) + ".svg"
-                    dfg_vis_factory.save(gviz, filen)
-                    print("Saved DFG image to: " + filen)
-                    file_names.append(filen)
-        if variant == "frequency" or variant == "all":
-            for label, items in relevance_scores.items():
-                no_activities = len(relevance_scores[label]['scores']) if len(
-                    relevance_scores[label]['scores']) < no_activities else no_activities
-
-                least_relevant = [tuple[0] for tuple in
-                                  sorted(relevance_scores[label]['scores'].items(), key=operator.itemgetter(1))[
-                                  0:len(relevance_scores[label]['scores']) - no_activities]]
-
-                data = filter_log_by_caseid(log, items['traces'])
-
-                data = attributes_filter.apply_events(data, least_relevant, parameters={
-                    attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "concept:name", "positive": False})
-
-                data = filter_log_by_caseid(data, items['traces'])
-                dfg = dfg_factory.apply(data)
-                activities_cnt = attributes_filter.get_attribute_values(log, attribute_key="concept:name")
-                gviz = dfg_vis_factory.apply(dfg, activities_count=activities_cnt, parameters=parameters)
-                if len(items['traces']) == 1:
-                    title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
-                else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(
-                        label) + ")"
-                gviz.body.append('\t// title')
-                gviz.body.append('\tfontsize = 50;')
-                gviz.body.append('\tlabelloc = "t";')
-                gviz.body.append('\tlabel = "' + title + '";')
-                if save_file:
-                    filen = file_name + "_freq_" + str(label) + ".svg"
-                    dfg_vis_factory.save(gviz, filen)
-                    print("Saved DFG image to: " + filen)
-                    file_names.append(filen)
-        if variant == "time" or variant == "all":
-            for label, items in relevance_scores.items():
-                no_activities = len(relevance_scores[label]['scores']) if len(
-                    relevance_scores[label]['scores']) < no_activities else no_activities
-
-                least_relevant = [tuple[0] for tuple in
-                                  sorted(relevance_scores[label]['scores'].items(), key=operator.itemgetter(1))[
-                                  0:len(relevance_scores[label]['scores']) - no_activities]]
-
-                data = filter_log_by_caseid(log, items['traces'])
-
-                data = attributes_filter.apply_events(data, least_relevant, parameters={
-                    attributes_filter.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "concept:name", "positive": False})
-
-                data = filter_log_by_caseid(data, items['traces'])
-                dfg = dfg_factory.apply(data)
-                parameters = {"format": "svg", "AGGREGATION_MEASURE": "mean"}
-                gviz = dfg_vis_factory.apply(dfg, variant="performance", parameters=parameters)
-                if len(items['traces']) == 1:
-                    title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
-                else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(
-                        label) + ")"
                 gviz.body.append('\t// title')
                 gviz.body.append('\tfontsize = 50;')
                 gviz.body.append('\tlabelloc = "t";')
