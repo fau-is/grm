@@ -177,7 +177,8 @@ class GRM(GGNNsparse):
         :param variant: dfg version to be produced: "frequency", "time", "relevance" or "all" [str]
         :return: file_names [list].
         """
-        parameters = {"format": "svg"}
+        parameters = {"format": "svg",
+                      "maxNoOfEdgesInDiagram": 250}
         file_names = list()
         relevance_scores = self.aggregate_relevance_scores(log)
         if topK > 0:
@@ -185,7 +186,7 @@ class GRM(GGNNsparse):
         if variant == "relevance" or variant == "all":
             for label, items in relevance_scores.items():
                 data = filter_log_by_caseid(log, items['traces'])
-                dfg = dfg_factory.apply(data)
+                dfg = dfg_factory.apply(data, parameters=parameters)
                 gviz = dfg_vis_factory.apply(dfg, activities_count=items['scores'], parameters=parameters)
                 if len(items['traces']) == 1:
                     title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
