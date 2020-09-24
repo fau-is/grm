@@ -245,6 +245,8 @@ class GRM(GGNNsparse):
 def filter_log_by_relevance(topK, log, relevance_scores):
     log_new = EventLog()
     for label in relevance_scores:
+        topK = len(relevance_scores[label]['scores']) if len(
+            relevance_scores[label]['scores']) < topK else topK
         relevance_scores[label]['scores'] = dict(sorted(relevance_scores[label]['scores'].items(), key=lambda x: x[1], reverse=True)[:topK])
         log_dummy = filter_log_by_caseid(log, relevance_scores[label]['traces'])
         log_dummy = attributes_filter.apply_events(log_dummy, relevance_scores[label]['scores'].keys(), parameters={
