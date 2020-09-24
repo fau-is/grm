@@ -181,6 +181,7 @@ class GRM(GGNNsparse):
                       "maxNoOfEdgesInDiagram": 250}
         file_names = list()
         relevance_scores = self.aggregate_relevance_scores(log)
+        topk_title = ", All activities" if topK==0 else ", " + str(topK) + " most relevant activities"
         if topK > 0:
             relevance_scores, log = filter_log_by_relevance(topK, log, relevance_scores)
         if variant == "relevance" or variant == "all":
@@ -191,7 +192,7 @@ class GRM(GGNNsparse):
                 if len(items['traces']) == 1:
                     title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
                 else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(label) + ")"
+                    title = "No of Cases: " + str(len(log)) + ", Filter: Label = " + str(label) + topk_title
                 gviz.body.append('\t// title')
                 gviz.body.append('\tfontsize = 50;')
                 gviz.body.append('\tlabelloc = "t";')
@@ -211,7 +212,7 @@ class GRM(GGNNsparse):
                 if len(items['traces']) == 1:
                     title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
                 else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(label) + ")"
+                    title = "No of Cases: " + str(len(log)) + ", Filter: Label = " + str(label) + topk_title
                 gviz.body.append('\t// title')
                 gviz.body.append('\tfontsize = 50;')
                 gviz.body.append('\tlabelloc = "t";')
@@ -230,7 +231,7 @@ class GRM(GGNNsparse):
                 if len(items['traces']) == 1:
                     title = "Prediction: " + str(label) + ", Case ID: " + items['traces'][0]
                 else:
-                    title = "No of Service Orders: " + str(len(log)) + ", Filter: Repair not on time (Label = " + str(label) + ")"
+                    title = "No of Cases: " + str(len(log)) + ", Label = " + str(label) + topk_title
                 gviz.body.append('\t// title')
                 gviz.body.append('\tfontsize = 50;')
                 gviz.body.append('\tlabelloc = "t";')
