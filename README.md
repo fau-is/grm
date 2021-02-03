@@ -2,16 +2,18 @@
 # GRM (Graph Relevance Miner) <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg/2000px-Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg.png" height="35">
 
 
-This repository contains the implementation of GRM from [Stierle et al.](https://arxiv.org/abs/2008.03110).
+This repository contains the implementation of GRM from [Stierle et al.](https://doi.org/10.1016/j.dss.2021.113511).
 To cite this work, please use:
 ```
-@misc{stierle2020grm,
-    title={A Technique for Determining Relevance Scores of Process Activities using Graph-based Neural Networks},
-    author={Stierle, Matthias and Weinzierl, Sven and Harl, Maximilian and Matzner, Martin},
-    year={2020},
-    eprint={2008.03110},
-    archivePrefix={arXiv},
-    primaryClass={cs.ML}
+@article{stierle2020grm,
+title = "A technique for determining relevance scores of process activities using graph-based neural networks",
+journal = "Decision Support Systems",
+pages = "113511",
+year = "2021",
+issn = "0167-9236",
+doi = "https://doi.org/10.1016/j.dss.2021.113511",
+url = "http://www.sciencedirect.com/science/article/pii/S016792362100021X",
+author = "Matthias Stierle and Sven Weinzierl and Maximilian Harl and Martin Matzner"
 }
 ```
 The implementation of our model is based on the GGNN implementation of [Li et al. 2015](https://arxiv.org/abs/1511.05493) which you can find [here](https://github.com/microsoft/gated-graph-neural-network-samples).
