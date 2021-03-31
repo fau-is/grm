@@ -9,6 +9,7 @@ To cite this work, please use:
 title = "A technique for determining relevance scores of process activities using graph-based neural networks",
 journal = "Decision Support Systems",
 pages = "113511",
+volume = "144",
 year = "2021",
 issn = "0167-9236",
 doi = "https://doi.org/10.1016/j.dss.2021.113511",
