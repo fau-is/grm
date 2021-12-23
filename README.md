@@ -17,7 +17,7 @@ url = "http://www.sciencedirect.com/science/article/pii/S016792362100021X",
 author = "Matthias Stierle and Sven Weinzierl and Maximilian Harl and Martin Matzner"
 }
 ```
-The implementation of our model is based on the GGNN implementation of [Li et al. 2015](https://arxiv.org/abs/1511.05493) which you can find [here](https://github.com/microsoft/gated-graph-neural-network-samples).
+The implementation of our model is based on the GGNN implementation of [Li et al. (2015)](https://arxiv.org/abs/1511.05493) which you can find [here](https://github.com/microsoft/gated-graph-neural-network-samples).
 
 GRM can extract the relevance scores of process activities given a performance measure from an event log.
 
