@@ -2,7 +2,7 @@
 # GRM (Graph Relevance Miner) <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg/2000px-Friedrich-Alexander-Universit%C3%A4t_Erlangen-N%C3%BCrnberg_logo.svg.png" height="35">
 
 
-This repository contains the implementation of GRM from [Stierle et al.](https://doi.org/10.1016/j.dss.2021.113511).
+This repository contains the implementation of GRM from [Stierle et al. (2021)](https://doi.org/10.1016/j.dss.2021.113511).
 To cite this work, please use:
 ```
 @article{stierle2020grm,
